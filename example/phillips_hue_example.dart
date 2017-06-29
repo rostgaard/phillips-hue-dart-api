@@ -28,8 +28,6 @@ class SetCommand extends cli.Command {
 
     bool turnOn = argResults['on'] == 'true';
 
-    print(lights);
-
     await Future.wait(lights.map((int id) async {
       if (turnOn) {
         await _client.turnOn(id);
@@ -74,25 +72,4 @@ Future<Null> main(List<String> args) async {
     ..addCommand(new SetCommand())
     ..run(args);
   _client = new phillips.ApiClient(host, uname);
-  //
-  // while (true) {
-  //   try {
-  //     await new Future.delayed(new Duration(seconds: 1));
-  //     Stream<phillips.Light> lights = _client.getStates();
-  //
-  //     lights.forEach((phillips.Light l) {
-  //       print(json.convert(l));
-  //     });
-  //
-  //     if ((await _client.getState(3)).state.isOn) {
-  //       await _client.turnOff(3);
-  //     } else {
-  //       await _client.turnOn(3);
-  //     }
-  //   } catch (e, s) {
-  //     print(e);
-  //     print(s);
-  //   }
-  //   //await new Future.delayed(new Duration(seconds: 1));
-  //}
 }
