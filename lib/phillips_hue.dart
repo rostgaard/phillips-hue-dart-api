@@ -8,5 +8,6 @@ library phillips_hue;
 
 export 'src/api_client.dart';
 export 'src/phillips_hue_base.dart';
+export 'src/configuration.dart';
 
 // TODO: Export any libraries intended for clients of this package.

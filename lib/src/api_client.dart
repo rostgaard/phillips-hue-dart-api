@@ -13,7 +13,6 @@ class ApiClient {
 
   Future<Light> getState(int bulbId) async {
     final Uri url = Uri.parse('http://$hostname/api/$username/lights/$bulbId');
-
     final String s = await _client.get(url);
 
     return new Light.fromJson(JSON.decode(s));
@@ -21,7 +20,6 @@ class ApiClient {
 
   Stream<Light> getStates() async* {
     final Uri url = Uri.parse('http://$hostname/api/$username/lights');
-
     final String s = await _client.get(url);
     final Map<String, dynamic> lightsMap = JSON.decode(s);
 
@@ -46,18 +44,20 @@ class ApiClient {
 }
 
 Future<String> _extractContent(Stream<List<int>> request) {
-  Completer<String> completer = new Completer<String>();
-  List<int> completeRawContent = new List<int>();
+  final Completer<String> completer = new Completer<String>();
+  final List<int> completeRawContent = new List<int>();
 
   request.listen(completeRawContent.addAll,
-      onError: (dynamic error) => completer.completeError(error), onDone: () {
-    try {
-      String content = ASCII.decode(completeRawContent);
-      completer.complete(content);
-    } catch (error) {
-      completer.completeError(error);
-    }
-  }, cancelOnError: true);
+      onError: (dynamic error) => completer.completeError(error),
+      onDone: () {
+        try {
+          final String content = ASCII.decode(completeRawContent);
+          completer.complete(content);
+        } catch (error) {
+          completer.completeError(error);
+        }
+      },
+      cancelOnError: true);
 
   return completer.future;
 }
@@ -71,44 +71,36 @@ class Client {
 
   /// Retrives [resource] using HTTP GET.
   Future<String> get(Uri resource) async {
-    HttpClientRequest request = await client.getUrl(resource);
-    HttpClientResponse response = await request.close();
+    final HttpClientRequest request = await client.getUrl(resource);
+    final HttpClientResponse response = await request.close();
 
     return await _handleResponse(response, 'GET', resource);
   }
 
   /// Retrives [resource] using HTTP PUT, sending [payload].
-  ///
-  /// Throws subclasses of [StorageException] upon failure.
   Future<String> put(Uri resource, String payload) async {
     final HttpClientRequest request = await client.putUrl(resource)
       ..headers.contentType = _contentTypeJson
       ..write(payload);
-    print(resource);
-    print(payload);
-    HttpClientResponse response = await request.close();
+    final HttpClientResponse response = await request.close();
 
     return await _handleResponse(response, 'PUT', resource);
   }
 
   /// Retrives [resource] using HTTP POST, sending [payload].
-  ///
-  /// Throws subclasses of [StorageException] upon failure.
   Future<String> post(Uri resource, String payload) async {
-    HttpClientRequest request = await client.postUrl(resource)
+    final HttpClientRequest request = await client.postUrl(resource)
       ..headers.contentType = _contentTypeJson
       ..write(payload);
-    HttpClientResponse response = await request.close();
+    final HttpClientResponse response = await request.close();
 
     return await _handleResponse(response, 'POST', resource);
   }
 
   /// Retrives [resource] using HTTP DELETE.
-  ///
-  /// Throws subclasses of [StorageException] upon failure.
   Future<String> delete(Uri resource) async {
-    HttpClientRequest request = await client.deleteUrl(resource);
-    HttpClientResponse response = await request.close();
+    final HttpClientRequest request = await client.deleteUrl(resource);
+    final HttpClientResponse response = await request.close();
 
     return await _handleResponse(response, 'DELETE', resource);
   }

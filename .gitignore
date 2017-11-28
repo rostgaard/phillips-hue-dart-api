@@ -21,3 +21,9 @@ doc/api/
 *.iml
 *.ipr
 *.iws
+
+# Atom IDE files
+.atom/
+
+# Config files
+example/config.json

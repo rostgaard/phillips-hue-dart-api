@@ -49,7 +49,7 @@ class Light {
       this.productId,
       {this.id = -1});
 
-  factory Light.fromJson(Map<String, dynamic> map, {id = -1}) {
+  factory Light.fromJson(Map<String, dynamic> map, {int id = -1}) {
     return new Light(
         new LightState.fromJson(map[_Key.state]),
         map[_Key.type],
